@@ -7,10 +7,12 @@ import { setMaxSimultaneousRequests } from '../util/getMaxSimultaneousRequests.j
 const toolType = 'stackPrefetch';
 const requestType = 'prefetch';
 
-let configuration = {};
+let configuration = {
+  maxImagesToPrefetch: 10
+};
 
 let resetPrefetchTimeout;
-const resetPrefetchDelay = 300;
+const resetPrefetchDelay = 10;
 
 function range (lowEnd, highEnd) {
   // Javascript version of Python's range function
@@ -156,6 +158,12 @@ function prefetch (element) {
   let higherIndex = nearest.high;
 
   while (lowerIndex > 0 || higherIndex < stackPrefetch.indicesToRequest.length) {
+    const currentIndex = stack.currentImageIdIndex;
+
+    if (currentIndex - stackPrefetch.indicesToRequest[lowerIndex] > configuration.maxImagesToPrefetch || stackPrefetch.indicesToRequest[higherIndex] - currentIndex > configuration.maxImagesToPrefetch) {
+      break;
+    }
+
     if (lowerIndex >= 0) {
       nextImageIdIndex = stackPrefetch.indicesToRequest[lowerIndex--];
       imageId = stack.imageIds[nextImageIdIndex];
@@ -167,6 +175,7 @@ function prefetch (element) {
       imageId = stack.imageIds[nextImageIdIndex];
       requestPoolManager.addRequest(element, imageId, requestType, preventCache, doneCallback, failCallback);
     }
+
   }
 
   // Try to start the requestPool's grabbing procedure
