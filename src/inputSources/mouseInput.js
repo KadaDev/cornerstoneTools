@@ -1,6 +1,7 @@
 import { cornerstoneMath, external } from '../externalModules.js';
 import copyPoints from '../util/copyPoints.js';
 import pauseEvent from '../util/pauseEvent.js';
+import triggerEvent from '../util/triggerEvent.js';
 
 let isClickEvent = true;
 let preventClickTimeout;
@@ -29,7 +30,8 @@ function preventClickHandler () {
 }
 
 function activateMouseDown (mouseEventDetail) {
-  external.$(mouseEventDetail.element).trigger('CornerstoneToolsMouseDownActivate', mouseEventDetail);
+  triggerEvent(mouseEventDetail.element, 'CornerstoneToolsMouseDownActivate', mouseEventDetail);
+
 }
 
 function mouseDoubleClick (e) {
