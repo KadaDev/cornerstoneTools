@@ -160,17 +160,21 @@ function prefetch (element) {
   while (lowerIndex > 0 || higherIndex < stackPrefetch.indicesToRequest.length) {
     const currentIndex = stack.currentImageIdIndex;
 
-    if (currentIndex - stackPrefetch.indicesToRequest[lowerIndex] > configuration.maxImagesToPrefetch || stackPrefetch.indicesToRequest[higherIndex] - currentIndex > configuration.maxImagesToPrefetch) {
+
+    const shouldSkipLower = currentIndex - stackPrefetch.indicesToRequest[lowerIndex] > configuration.maxImagesToPrefetch;
+    const shouldSkipHigher = stackPrefetch.indicesToRequest[higherIndex] - currentIndex > configuration.maxImagesToPrefetch;
+
+    if (shouldSkipHigher && shouldSkipLower) {
       break;
     }
 
-    if (lowerIndex >= 0) {
+    if (!shouldSkipLower && lowerIndex >= 0) {
       nextImageIdIndex = stackPrefetch.indicesToRequest[lowerIndex--];
       imageId = stack.imageIds[nextImageIdIndex];
       requestPoolManager.addRequest(element, imageId, requestType, preventCache, doneCallback, failCallback);
     }
 
-    if (higherIndex < stackPrefetch.indicesToRequest.length) {
+    if (!shouldSkipHigher && higherIndex < stackPrefetch.indicesToRequest.length) {
       nextImageIdIndex = stackPrefetch.indicesToRequest[higherIndex++];
       imageId = stack.imageIds[nextImageIdIndex];
       requestPoolManager.addRequest(element, imageId, requestType, preventCache, doneCallback, failCallback);
