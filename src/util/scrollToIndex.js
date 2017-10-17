@@ -102,11 +102,6 @@ export default function (element, newImageIdIndex) {
 
   let imagePromise;
 
-  if (preventCache) {
-    imagePromise = cornerstone.loadImage(newImageId);
-  } else {
-    imagePromise = cornerstone.loadAndCacheImage(newImageId);
-  }
 
   imagePromise.then(doneCallback, failCallback);
   // Make sure we kick off any changed download request pools
