@@ -69,7 +69,7 @@ function mouseDoubleClick (e) {
 
   const event = external.$.Event(eventType, eventData);
 
-  external.$(eventData.element).trigger(event, eventData);
+  triggerEvent(eventData.element, event, eventData);
 }
 
 function mouseDown (e) {
@@ -112,7 +112,7 @@ function mouseDown (e) {
 
   const event = external.$.Event(eventType, eventData);
 
-  external.$(eventData.element).trigger(event, eventData);
+  triggerEvent(eventData.element, event, eventData);
 
   if (event.isImmediatePropagationStopped() === false) {
     // No tools responded to this event, give the active tool a chance
@@ -160,7 +160,7 @@ function mouseDown (e) {
       shiftKey: e.shiftKey
     };
 
-    external.$(eventData.element).trigger(eventType, eventData);
+    triggerEvent(eventData.element, eventType, eventData);
 
     // Update the last points
     lastPoints = copyPoints(currentPoints);
@@ -216,7 +216,7 @@ function mouseDown (e) {
 
     const event = external.$.Event(eventType, eventData);
 
-    external.$(eventData.element).trigger(event, eventData);
+    triggerEvent(eventData.element, event, eventData);
 
     external.$(document).off('mousemove', onMouseMove);
     external.$(document).off('mouseup', onMouseUp);
@@ -284,7 +284,7 @@ function mouseMove (e) {
     type: eventType
   };
 
-  external.$(element).trigger(eventType, eventData);
+  triggerEvent(element, eventType, eventData);
 
   // Update the last points
   lastPoints = copyPoints(currentPoints);

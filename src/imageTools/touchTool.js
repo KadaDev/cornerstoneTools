@@ -5,6 +5,7 @@ import touchMoveHandle from '../manipulators/touchMoveHandle.js';
 import moveNewHandleTouch from '../manipulators/moveNewHandleTouch.js';
 import touchMoveAllHandles from '../manipulators/touchMoveAllHandles.js';
 import { addToolState, removeToolState, getToolState } from '../stateManagement/toolState.js';
+import triggerEvent from '../util/triggerEvent.js';
 
 function deactivateAllHandles (handles) {
   Object.keys(handles).forEach(function (name) {
@@ -197,7 +198,7 @@ function touchTool (touchToolInterface) {
       if (lastEvent && lastEvent.type === 'CornerstoneToolsTouchPress') {
         const event = external.$.Event(lastEvent.type, lastEventData);
 
-        external.$(element).trigger(event, lastEventData);
+        triggerEvent(element, event, lastEventData);
       }
     }
 
@@ -330,7 +331,7 @@ function touchTool (touchToolInterface) {
 
     const event = external.$.Event(eventType, statusChangeEventData);
 
-    external.$(element).trigger(event, statusChangeEventData);
+    triggerEvent(element, event, statusChangeEventData);
 
     external.$(element).off('CornerstoneImageRendered', touchToolInterface.onImageRendered);
     external.$(element).off('CornerstoneToolsTouchStart', touchToolInterface.touchStartCallback || touchStartCallback);
